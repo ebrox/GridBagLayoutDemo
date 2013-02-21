@@ -13,24 +13,106 @@ public class Particles extends PApplet{
     
     int numParts = 40;
     Mover[] particles = new Mover[numParts];
-    float vel1 = 1;
-    float vel2 = 4;
     float topSpeed = 7f;
-    
+    int[] color1 = new int[3];
+    int[] color2 = new int[3];
+
 
     /** method to create size of sketch and particles */
     @Override
     public void setup() {
       size(775,200);
+      
+      particleFill(2, 2);
             
-      for (int i = 0; i < numParts; i++) {
+       
+    }
+    /** method to fill the start box with 20 of each element to be used in 
+     * simulation */
+    public void particleFill(int part1, int part2){
+        
+        float vel1 = 0;
+        float dia1 = 0;
+        float vel2 = 0;
+        float dia2 = 0;
+        float rate = 5;
+        
+        switch(part1){
+            case 1:
+                vel1 = rate;
+                dia1 = 2;
+                color1[0] = 0;
+                color1[1] = 120;
+                color1[2] = 200;
+                break;
+            case 2:
+                vel1 = rate/sqrt(5);
+                dia1 = 5;
+                color1[0] = 30;
+                color1[1] = 80;
+                color1[2] = 230;
+                break;
+            case 3:
+                vel1 = rate/sqrt(10);
+                dia1 = 6;
+                color1[0] = 130;
+                color1[1] = 50;
+                color1[2] = 150;
+        }
+        
+        switch(part2){
+            case 1:
+                vel2 = rate;
+                dia2 = 2;
+                color2[0] = 150;
+                color2[1] = 120;
+                color2[2] = 130;
+                break;
+            case 2:
+                vel2 = rate/sqrt(5);
+                dia2 = 5;
+                color2[0] = 110;
+                color2[1] = 200;
+                color2[2] = 20;
+                break;
+            case 3:
+                vel2 = rate/sqrt(10);
+                dia2 = 6;
+                color2[0] = 80;
+                color2[1] = 10;
+                color2[2] = 130;
+                break;
+            case 4:
+                vel2 = rate/sqrt(20);
+                dia2 = 9;
+                color2[0] = 250;
+                color2[1] = 220;
+                color2[2] = 100;
+                break;
+            case 5:
+                vel2 = rate/sqrt(16);
+                dia2 = 7;
+                color2[0] = 120;
+                color2[1] = 200;
+                color2[2] = 60;
+                break;
+            case 6:
+                vel2 = rate/sqrt(14);
+                dia2 = 4;
+                color2[0] = 50;
+                color2[1] = 190;
+                color2[2] = 100;
+        }
+        
+        for (int i = 0; i < numParts; i++) {
           if (i % 2 == 0){
-              particles[i] = new Mover(vel1, 10, i, particles);
+              particles[i] = new Mover(vel1, dia1, i, particles);
           }
           else{
-              particles[i] = new Mover(vel2, 20, i, particles);
+              particles[i] = new Mover(vel2, dia2, i, particles);
           }
-      } 
+      }
+        
     }
 
     /** method to draw particles, runs continously */
@@ -107,11 +189,13 @@ public class Particles extends PApplet{
         fill(175);
         
         if (ele % 2 == 0){
-                fill(150, 102, 200);
+//                fill(150, 102, 200);
+                fill(color1[0], color1[1], color1[2]);
                 ellipse(x, y, diameter, diameter);
             }
             else{
-                fill(255, 204);
+//                fill(255, 204);
+                fill(color2[0], color2[1], color2[2]);
                 ellipse(x, y, diameter, diameter);
             }
       }
