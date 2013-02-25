@@ -1,11 +1,14 @@
 /**
- * Programmers: Ed Broxson & Chase McCowan Date: 02/20/2013 Purpose: Create and
- * draw multiple particles for use in Chemistry Diffusion example.
+ * Programmers: Ed Broxson & Chase McCowan 
+ * Date: 02/20/2013 
+ * Purpose: Create and draw multiple particles for use 
+ *          in Chemistry Diffusion example.
  */
 package layout;
 
 import processing.core.PApplet;
 import processing.core.PFont;
+import processing.core.PVector;
 
 public class GasChamber extends PApplet {
 
@@ -19,8 +22,9 @@ public class GasChamber extends PApplet {
     int mw1, mw2;
     double time1, time2;
     String gas1, gas2;
-    PFont myFont;
+    PFont myFont, delinFont;
     boolean bStop;
+        
 
     /**
      * method to create size of sketch and particles
@@ -29,6 +33,7 @@ public class GasChamber extends PApplet {
     public void setup() {
         size(775, 200);
         myFont = createFont("sans-serif", 24);
+        delinFont = createFont("sans-serif", 14);
     }
 
     /**
@@ -36,10 +41,16 @@ public class GasChamber extends PApplet {
      */
     @Override
     public void draw() {
+//        frameRate(31);  // AEB another way to change the speed of particles,
+                          // may be usefull in figuring out the particles
+                          // bouncing beyond Gate Line after a minute or two in the box
+        
         int gateX = 200;
         int gateY = 100;
         int finishX = 750;
         int finishY = 100;
+        int delinX = 220;
+        int delinY = 0;
 
         background(170);
 
@@ -65,6 +76,13 @@ public class GasChamber extends PApplet {
         rotate(HALF_PI);
         text("Finish Line", 0, 0);
         popMatrix();
+        
+        textFont(delinFont);
+        textAlign(CENTER, TOP);
+        pushMatrix();
+        translate(delinX, delinY);
+        text("-------------------------------------------------- 50 Meters ---------------------------------------------------", 265, 0);
+        popMatrix();
 
         for (int i = 0; i < numParts; i++) {
             particles[i].update();
@@ -77,6 +95,7 @@ public class GasChamber extends PApplet {
             x = particles[j].location.x;
             y = particles[j].location.y;
             diameter = particles[j].diameter;
+            
 
             if (j % 2 == 0) {
                 fill(color1[0], color1[1], color1[2]);
@@ -89,7 +108,7 @@ public class GasChamber extends PApplet {
     }
 
     /**
-     * method to pause the drawing of this PApplet
+     * method to pause and restart the drawing of this PApplet
      */
     @Override
     public void keyPressed() {
@@ -111,7 +130,7 @@ public class GasChamber extends PApplet {
         float diam1 = 0;
         float vel2 = 0;
         float diam2 = 0;
-        float rate = 5;
+        float rate = 2;
 
         switch (part1) {
             case 1:
@@ -197,7 +216,7 @@ public class GasChamber extends PApplet {
                 color2[2] = 0;
                 break;
             case 6:
-                vel2 = rate / sqrt(14);
+                vel2 = rate / sqrt(4);
                 diam2 = 4;
                 mw2 = 16;
                 time2 = 1;

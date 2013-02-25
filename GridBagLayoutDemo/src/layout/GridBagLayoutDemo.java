@@ -54,7 +54,7 @@ public class GridBagLayoutDemo {
                                               // listeners and uses the
                                              // variables set by the Combo Boxes
 
-        Element.setTopSpeed(Element.getTopSpeed() * (1.21f)); // AEB for Slider listener temp range is 0.00f (at -100) to 1.00f (at 0) to 2.00f (at 100)
+        Element.setTopSpeed(Element.getTopSpeed() * (1.00f)); // AEB for Slider listener temp range is 0.00f (at -100) to 1.00f (at 0) to 2.00f (at 100)
         
         bt.setGateOpen(false);  // AEB for Go Button listener
         

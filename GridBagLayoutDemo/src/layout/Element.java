@@ -1,6 +1,7 @@
 /**
- * Programmers: Ed Broxson & Chase McCowan Date: 02/20/2013 Purpose: Create and
- * draw multiple particles for use in Chemistry Diffusion example.
+ * Programmers: Ed Broxson & Chase McCowan
+ * Date: 02/22/2013
+ * Purpose: Build particles and handle collisions and movement.
  */
 package layout;
 
@@ -65,8 +66,7 @@ public class Element {
                 velocity.x -= ax;
                 velocity.y -= ay;
                 others[i].velocity.x += ax;
-                others[i].velocity.y += ay;
-
+                others[i].velocity.y += ay; 
             }
         }
         velocity.limit(topSpeed);
@@ -112,6 +112,12 @@ public class Element {
     public PVector getVelocity() {
         return velocity;
     }
+
+    public void setVelocity(PVector velocity) {
+        this.velocity = velocity;
+    }
+    
+    
 
     public static void setGateOpen(boolean gateO) {
         gateOpen = gateO;
