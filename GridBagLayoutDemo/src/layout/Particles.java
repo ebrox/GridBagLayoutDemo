@@ -6,6 +6,7 @@
  */
 package layout;
 
+import javax.swing.JOptionPane;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -13,9 +14,12 @@ public class Particles extends PApplet{
     
     int numParts = 40;
     Mover[] particles = new Mover[numParts];
-    float topSpeed = 7f;
+    float topSpeed = 4f;
     int[] color1 = new int[3];
     int[] color2 = new int[3];
+    boolean open = true;
+    static boolean isWinner = false;
+//    boolean oneTime = false;
 
 
     /** method to create size of sketch and particles */
@@ -119,13 +123,19 @@ public class Particles extends PApplet{
     @Override
     public void draw() {
       background(170);
-      line(200, 0, 200, height);
+      
+      if (!open){
+          line(200, 0, 200, height);
+      }
+      
+      
       
       for (int i = 0; i < numParts; i++) {
         particles[i].update();
         particles[i].checkEdges();
         particles[i].display(i);  
       }
+      
       
     }
     /** class to create particles of elements and provide methods to move them
@@ -206,10 +216,22 @@ public class Particles extends PApplet{
           x += velocity.x;
           y += velocity.y;
           
-          if (x + diameter/2 > 200) {
+          if (!open && x + diameter/2 > 200) {
             x = 200 - diameter/2;
             velocity.x *= -1;
           }
+          else if (!isWinner &&  (x + diameter/2) > width){
+               
+//              JOptionPane.showMessageDialog(null, "WINNER!");
+              isWinner = true;
+            
+//            GridBagLayoutDemo gbl = new GridBagLayoutDemo();
+//            gbl.showWinner();
+          }
+//          else if (open && x + diameter/2 > width){
+//            x = width - diameter/2;
+//            velocity.x *= -1;
+//          }
           else if (x - diameter/2 < 0) {
             x = diameter/2;
             velocity.x *= -1;

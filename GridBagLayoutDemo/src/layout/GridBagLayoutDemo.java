@@ -5,13 +5,13 @@ package layout;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.*;
-import processing.core.PApplet;
 
 public class GridBagLayoutDemo {
     final static boolean shouldFill = true;
     final static boolean shouldWeightX = true;
     final static boolean RIGHT_TO_LEFT = false;
+    
+    static boolean isWinner = false;
 
     public static void addComponentsToPane(Container pane) {
         if (RIGHT_TO_LEFT) {
@@ -40,14 +40,27 @@ public class GridBagLayoutDemo {
         jp1.add(button2);
 	pane.add(jp1, c);
         
+                
         //*********DRAWING START BOX, RACE BOX, GATE AND FINISH*********
         JPanel jp7 = new JPanel(new GridBagLayout());
         jp7.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.RED), "Simulation Space"));
         //
-        PApplet bt = new Particles();
+        GasChamber bt = new GasChamber();
+        
         bt.init();
         jp7.add(bt);
+        
+        bt.particleFill(1, 6);                 // AEB for the Combo Box 
+                                              // listeners and uses the
+                                             // variables set by the Combo Boxes
 
+        Element.setTopSpeed(Element.getTopSpeed() * (1.21f)); // AEB for Slider listener temp range is 0.00f (at -100) to 1.00f (at 0) to 2.00f (at 100)
+        
+        bt.setGateOpen(false);  // AEB for Go Button listener
+        
+        bt.keyPressed();  // AEB for Pause and Play Button Listeners (since it is only one method the Pause and Play buttons can probably be combined
+                          // because the method is being called the app starts paused, press any key and it will go again
+        
         //jp7.add(knownComboBoxList,BorderLayout.NORTH);
         c.insets = new Insets(10,10,10,10);
         c.ipadx = 500;                                              // AEB added
@@ -242,4 +255,9 @@ public class GridBagLayoutDemo {
             }
         });
     }
+    
+//    public void showWinner(){
+//        isWinner = true;
+//            
+//    }
 }
