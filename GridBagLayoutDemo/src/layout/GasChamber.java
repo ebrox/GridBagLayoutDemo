@@ -133,7 +133,7 @@ public class GasChamber extends PApplet {
         float rate = 2;
 
         switch (part1) {
-            case 1:
+            case 0:
                 vel1 = rate;
                 diam1 = 2;
                 mw1 = 4;
@@ -143,7 +143,7 @@ public class GasChamber extends PApplet {
                 color1[1] = 0;
                 color1[2] = 0;
                 break;
-            case 2:
+            case 1:
                 vel1 = rate / sqrt(5);
                 diam1 = 5;
                 mw1 = 20;
@@ -153,7 +153,7 @@ public class GasChamber extends PApplet {
                 color1[1] = 255;
                 color1[2] = 0;
                 break;
-            case 3:
+            case 2:
                 vel1 = rate / sqrt(10);
                 diam1 = 6;
                 mw1 = 40;
@@ -165,7 +165,7 @@ public class GasChamber extends PApplet {
         }
 
         switch (part2) {
-            case 1:
+            case 0:
                 vel2 = rate;
                 diam2 = 2;
                 mw2 = 4;
@@ -175,7 +175,7 @@ public class GasChamber extends PApplet {
                 color2[1] = 255;
                 color2[2] = 255;
                 break;
-            case 2:
+            case 1:
                 vel2 = rate / sqrt(5);
                 diam2 = 5;
                 mw2 = 20;
@@ -185,7 +185,7 @@ public class GasChamber extends PApplet {
                 color2[1] = 100;
                 color2[2] = 0;
                 break;
-            case 3:
+            case 2:
                 vel2 = rate / sqrt(10);
                 diam2 = 6;
                 mw2 = 40;
@@ -195,7 +195,7 @@ public class GasChamber extends PApplet {
                 color2[1] = 0;
                 color2[2] = 0;
                 break;
-            case 4:
+            case 3:
                 vel2 = rate / sqrt(20);
                 diam2 = 9;
                 mw2 = 80;
@@ -205,7 +205,7 @@ public class GasChamber extends PApplet {
                 color2[1] = 0;
                 color2[2] = 255;
                 break;
-            case 5:
+            case 4:
                 vel2 = rate / sqrt(16);
                 diam2 = 7;
                 mw2 = 64;
@@ -215,7 +215,7 @@ public class GasChamber extends PApplet {
                 color2[1] = 255;
                 color2[2] = 0;
                 break;
-            case 6:
+            case 5:
                 vel2 = rate / sqrt(4);
                 diam2 = 4;
                 mw2 = 16;
