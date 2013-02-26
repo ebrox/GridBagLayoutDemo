@@ -10,13 +10,16 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.SoftBevelBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class GridBagLayoutDemo {
     final static boolean shouldFill = true;
     final static boolean shouldWeightX = true;
     final static boolean RIGHT_TO_LEFT = false;
     
-    static boolean isWinner = false;
+    static boolean bx1 = false, bx2 = false;
+    static int box1 = 0, box2 = 0;
     PeriodButtonEvents pbe;
 
     public static void addComponentsToPane(Container pane) {
@@ -32,9 +35,10 @@ public class GridBagLayoutDemo {
                 unknownComboBoxLabel,tempLabel;
         JTable table;
         JScrollPane jsp;
-        JComboBox knownComboBox,unknownComboBox;
+        final JComboBox knownComboBox,unknownComboBox;
         JList knownList,unknownList;
-        JSlider slider;
+        final JSlider slider;
+        
         
         /**make raisedBevel border*/
         Border raisedBevel = BorderFactory.createRaisedSoftBevelBorder();
@@ -149,7 +153,7 @@ public class GridBagLayoutDemo {
         boxPanel.setBackground(new Color(12,66,116));
         
         /**make gaschamber object bt*/
-        GasChamber bt = new GasChamber();
+        final GasChamber bt = new GasChamber();
         
         /**initialize bt*/
         bt.init();
@@ -157,21 +161,12 @@ public class GridBagLayoutDemo {
         /**add bt object to boxPanel*/
         boxPanel.add(bt);
         
-        bt.particleFill(1, 6);                 // AEB for the Combo Box 
-                                              // listeners and uses the
+        //** initialize particleFill from GasChamber */
+        bt.particleFill(0, 0);                 // AEB initialize and for the Combo
+                                              // Box listeners and uses the
                                              // variables set by the Combo Boxes
-
-        Element.setTopSpeed(Element.getTopSpeed() * (1.00f)); // AEB for Slider listener temp range is 0.00f (at -100) to 1.00f (at 0) to 2.00f (at 100)
         
-        bt.setGateOpen(false);  // AEB for Go Button listener
         
-        bt.keyPressed();  // AEB for Pause and Play Button Listeners (since it is only one method the Pause and Play buttons can probably be combined
-                          // because the method is being called the app starts paused, press any key and it will go again
-        /**setup bt\*/
-        //bt.setup();
-        
-        /**get size of bt*/
-        //bt.getSize();
 
         /**set grid bag layout constraints*/
         c.insets = new Insets(10,10,10,10);
@@ -208,8 +203,8 @@ public class GridBagLayoutDemo {
         knownComboBoxLabel.setForeground(new Color(12,66,116));
         
         /**create array of list data for JList*/
-        String [] knownComboBoxListData = {"Argon (Ar)",
-            "Helium (He)", "Neon (Ne)"};
+        String [] knownComboBoxListData = {"Helium (He)",
+            "Neon (Ne)", "Argon (Ar)",};
         
         /**create combobox and add list data to it*/
         knownComboBox = new JComboBox(knownComboBoxListData);
@@ -219,6 +214,18 @@ public class GridBagLayoutDemo {
         
         /**set visible amount of rows in JList to 1*/
         knownList.setVisibleRowCount(1);
+        
+        /** listener to start mix using particleFill method from GasChamber */
+        knownComboBox.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                bx1 = true;
+                box1 = knownComboBox.getSelectedIndex();
+                  if (bx1 && bx2){
+                      bt.particleFill(box1, box2);
+                  }  
+            }  
+        });
+       
         
         /**set grid bag layout constraints*/
 	c.fill = GridBagConstraints.NONE;
@@ -260,8 +267,8 @@ public class GridBagLayoutDemo {
         unknownComboBoxLabel.setForeground(new Color(12,66,116));
         
         /**create array of list data for JList*/
-        String [] unknownComboBoxListData = {"Argon (Ar)", "Helium (He)", 
-            "Neon (Ne)","Unknown 1","Unknown 2","Unknown 3"};
+        String [] unknownComboBoxListData = {"Helium (He)", 
+            "Neon (Ne)", "Argon (Ar)", "Unknown 1", "Unknown 2", "Unknown 3"};
         
         /**create combobox and add data to it*/
         unknownComboBox = new JComboBox(unknownComboBoxListData);
@@ -271,6 +278,18 @@ public class GridBagLayoutDemo {
         
         /**set visible amount of rows in combo box to 1*/
         unknownList.setVisibleRowCount(1);
+        
+        /** listener to start mix using particleFill method from GasChamber */
+        unknownComboBox.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                bx2 = true;
+                box2 = unknownComboBox.getSelectedIndex();
+                  if (bx1 && bx2){
+                      bt.particleFill(box1, box2);
+                  }  
+            }  
+        });
+        
         
         /**set grid bag layout constraints*/
         c.fill = GridBagConstraints.NONE;
@@ -318,9 +337,21 @@ public class GridBagLayoutDemo {
         
         /**set slider constraints*/
         slider.setSize(100,20);
+        slider.setMinimum(10);
+        slider.setMaximum(200);
         slider.setMajorTickSpacing(50);
         slider.setMinorTickSpacing(10);
         slider.setPaintTicks(true);
+        
+        /** listener to update topSpeed in GasChamber and Element */
+        slider.addChangeListener(new ChangeListener(){
+            @Override
+            public void stateChanged(ChangeEvent e){
+                float value = slider.getValue();
+                Element.setTopSpeed((value/10));
+            }
+        });
+        
         
         /**set grid bag layout constraints*/
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -355,6 +386,14 @@ public class GridBagLayoutDemo {
         
         /**set border for button*/
         goButton.setBorder(raisedBevel);
+        
+        /** listener to open the gate and start the race */
+        goButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                  bt.setGateOpen(true);  
+                
+            }  
+        });
         
         /**set grid bag layout constraints*/
         c.insets = new Insets(0,0,0,30);
@@ -489,9 +528,4 @@ public class GridBagLayoutDemo {
         });
         
     }
-    
-//    public void showWinner(){
-//        isWinner = true;
-//            
-//    }
 }
