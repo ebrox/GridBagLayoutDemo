@@ -4,7 +4,12 @@
 package layout;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import javax.swing.border.SoftBevelBorder;
 
 public class GridBagLayoutDemo {
     final static boolean shouldFill = true;
@@ -12,43 +17,145 @@ public class GridBagLayoutDemo {
     final static boolean RIGHT_TO_LEFT = false;
     
     static boolean isWinner = false;
+    PeriodButtonEvents pbe;
 
     public static void addComponentsToPane(Container pane) {
         if (RIGHT_TO_LEFT) {
             pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         }
-
-        JButton button;
+        /**declare variables*/
+        JPanel periodHelpPanel, knownComboPanel, unknownComboPanel, sliderPanel,
+                playPausePanel, tablePanel, boxPanel,checkResetButtonPanel;
+        JButton periodButton, helpButton, goButton, playButton, pauseButton, 
+                resetButton, checkAnswerButton;
+        JLabel gasDiffuseLabel,enterLabel,knownComboBoxLabel,
+                unknownComboBoxLabel,tempLabel;
+        JTable table;
+        JScrollPane jsp;
+        JComboBox knownComboBox,unknownComboBox;
+        JList knownList,unknownList;
+        JSlider slider;
+        
+        /**make raisedBevel border*/
+        Border raisedBevel = BorderFactory.createRaisedSoftBevelBorder();
+        
+        /**declare and initialize*/
+        String comboChoice1 = "";
+        String comboChoice2 = "";
+        String time1 = "";
+        String time2 = "";
+        String rate1 = "";
+        String rate2 = "";
+        String mw1 = "";
+        String mw2 = "";
+        
+//        double time1 = 0.0;
+//        double time2 = 0.0;
+//        double rate1 = 0.0;
+//        double rate2 = 0.0;
+//        int mw1 = 0;
+//        int mw2 = 0;
+        
+        /**set pane layout to grid bag layout*/
 	pane.setLayout(new GridBagLayout());
+        
+        /**set pane color*/
+        pane.setBackground(new Color(12,66,116));
+        
+        /**make grid bag constraints object*/
 	GridBagConstraints c = new GridBagConstraints();
-	if (shouldFill) {
-	//natural height, maximum width
+        
+        /**natural height, maximum width*/
+        if (shouldFill) {
 	c.fill = GridBagConstraints.HORIZONTAL;
 	}
         
-        //********PERIODIC TABLE BUTTON AND HELP BUTTON***************
-        //new panel jp1 for start box, race, box, start gate
-        JPanel jp1 = new JPanel();
-        JButton button1 = new JButton("Periodic Table");
-        JButton button2 = new JButton("Help");
-	c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(10,10,10,10);
-	c.weightx = 0.5;
-	c.gridx = 4;
-	c.gridy = 0;
-        jp1.add(button1);
-        jp1.add(button2);
-	pane.add(jp1, c);
+        //*****************************TITLE**************************
+        /**title label*/
+        gasDiffuseLabel = new JLabel("Gaseous Diffusion");
         
-                
+        /**set font for label*/
+        gasDiffuseLabel.setFont(new Font("Verdana",Font.BOLD,50));
+        
+        /**set foreground color for label*/
+        gasDiffuseLabel.setForeground(Color.white);
+        
+        /**set grid bag layout constraints*/
+        c.insets = new Insets(10,10,10,10);
+        c.ipadx = 0;
+        c.ipady = 0;
+	c.weightx = 0.5;
+        c.weighty = 0;
+        c.gridwidth = 15;
+        c.gridheight = 1;
+        c.fill = GridBagConstraints.BOTH;
+	c.gridx = 0;
+	c.gridy = 0;
+        
+        /**add panel and contraints to pane*/
+	pane.add(gasDiffuseLabel, c);
+        
+        //********PERIODIC TABLE BUTTON AND HELP BUTTON***************
+        /**panel for periodButton and helpButton*/
+        periodHelpPanel = new JPanel();
+        
+        /**set panel color*/
+        periodHelpPanel.setBackground(new Color(203,228,38));
+        
+        /**set border for button*/
+        periodHelpPanel.setBorder(raisedBevel);
+        
+        /**make buttons*/
+        periodButton = new JButton("Periodic Table");
+        helpButton = new JButton("Help");
+        
+//        /**create a listener for the periodic button and add it to the button*/
+//        PeriodButtonEvents pbe = new PeriodButtonEvents();
+//        periodButton.addActionListener(pbe);
+        
+        /**set grid bag layout constraints*/
+        /**set fill*/
+	c.fill = GridBagConstraints.HORIZONTAL;
+        
+        /**set padding*/
+        c.insets = new Insets(0,0,0,0);
+        
+        /**set weight*/
+        c.weightx = 0.5;
+        
+        /**set grid position*/
+	c.gridx = 9;
+	c.gridy = 0;
+        
+        /**set height and width of grid cell*/
+        c.ipadx = 0;
+        c.ipady = 0;
+        
+        /**set anchor point within cell*/
+        c.anchor = GridBagConstraints.EAST;
+        
+        /**add buttons to panel*/
+        periodHelpPanel.add(periodButton);
+        periodHelpPanel.add(helpButton);
+        
+        /**add panel and contraints to pane*/
+	pane.add(periodHelpPanel, c);
+        
         //*********DRAWING START BOX, RACE BOX, GATE AND FINISH*********
-        JPanel jp7 = new JPanel(new GridBagLayout());
-        jp7.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.RED), "Simulation Space"));
-        //
+        
+        /**make boxPanel and set layout to gridbaglayout*/
+        boxPanel = new JPanel();
+        
+        boxPanel.setBackground(new Color(12,66,116));
+        
+        /**make gaschamber object bt*/
         GasChamber bt = new GasChamber();
         
+        /**initialize bt*/
         bt.init();
-        jp7.add(bt);
+        
+        /**add bt object to boxPanel*/
+        boxPanel.add(bt);
         
         bt.particleFill(1, 6);                 // AEB for the Combo Box 
                                               // listeners and uses the
@@ -60,200 +167,327 @@ public class GridBagLayoutDemo {
         
         bt.keyPressed();  // AEB for Pause and Play Button Listeners (since it is only one method the Pause and Play buttons can probably be combined
                           // because the method is being called the app starts paused, press any key and it will go again
+        /**setup bt\*/
+        //bt.setup();
         
-        //jp7.add(knownComboBoxList,BorderLayout.NORTH);
+        /**get size of bt*/
+        //bt.getSize();
+
+        /**set grid bag layout constraints*/
         c.insets = new Insets(10,10,10,10);
         c.ipadx = 500;                                              // AEB added
         c.ipady = 200;                                              // AEB added
 	c.weightx = 0.5;
-        c.gridwidth = 5;                                            // AEB was 1
-        c.gridheight = 2;                         // AEB was 5 and commented out
+        c.gridwidth = 15;                                            // AEB was 1
+        c.gridheight = 1;                         // AEB was 5 and commented out
         c.fill = GridBagConstraints.BOTH;
 	c.gridx = 0;
 	c.gridy = 1;
-	pane.add(jp7, c);
+        
+        /**add panel and contraints to pane*/
+	pane.add(boxPanel, c);
         
         //*******KNOWN COMBO BOX***********
-        //new jpanel for the known molecules combobox
-        JPanel jp2 = new JPanel(new BorderLayout());
         
-        //variables
-        JComboBox knownComboBox;
-        //create known combo box list label
-        JLabel knownComboBoxList = new JLabel("Select Known Molecules: ");
-        //create array of list data for JList
-        String [] knownComboBoxListData = {"Argon (Ar)", "Helium (He)", "Neon (Ne)"};
+        /**new jpanel for the known molecules combobox*/
+        knownComboPanel = new JPanel(new BorderLayout());
+        
+        /**set panel color*/
+        knownComboPanel.setBackground(new Color(203,228,38));
+        
+        /**set border for button*/
+        knownComboPanel.setBorder(raisedBevel);
+        
+        /**create known combo box list label*/
+        knownComboBoxLabel = new JLabel("Select Known Molecules: ");
+        
+        /**set font for label*/
+        knownComboBoxLabel.setFont(new Font("Verdana",Font.BOLD,15));
+        
+        /**set foreground color for label*/
+        knownComboBoxLabel.setForeground(new Color(12,66,116));
+        
+        /**create array of list data for JList*/
+        String [] knownComboBoxListData = {"Argon (Ar)",
+            "Helium (He)", "Neon (Ne)"};
+        
+        /**create combobox and add list data to it*/
         knownComboBox = new JComboBox(knownComboBoxListData);
-        //create a courses list
-        JList knownList  = new JList(knownComboBoxListData);
-        //set visible amount of rows in JList
+        
+        /**create a courses list*/
+        knownList  = new JList(knownComboBoxListData);
+        
+        /**set visible amount of rows in JList to 1*/
         knownList.setVisibleRowCount(1);
-        jp2.add(knownComboBoxList,BorderLayout.NORTH);
-        jp2.add(knownComboBox,BorderLayout.SOUTH);
-        c.ipadx = 25;                                               // AEB added
-        c.ipady = 25;                                               // AEB added
-        c.gridwidth = 1;                                            // AEB added
-        c.gridheight = 1;                                           // AEB added
-	c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(10,10,10,10);
-	c.weightx = 0.5;
+        
+        /**set grid bag layout constraints*/
+	c.fill = GridBagConstraints.NONE;
+        c.insets = new Insets(0,10,0,10);
+        c.weightx = 0.5;
+        c.gridwidth = 1;
 	c.gridx = 0;
 	c.gridy = 3;
-	pane.add(jp2, c);
+        c.ipadx = 0;
+        c.ipady = 0;
         
+        /**add combo box label to panel*/
+        knownComboPanel.add(knownComboBoxLabel,BorderLayout.NORTH);
+        
+        /**add combo box label to panel*/
+        knownComboPanel.add(knownComboBox,BorderLayout.SOUTH);
+        
+        /**add panel to pane*/
+	pane.add(knownComboPanel, c);
+
         //***********UNKNOWN/KNOWN COMBO BOX***************
-        //new jpanel for the unknown molecules combobox
-        JPanel jp3 = new JPanel(new BorderLayout());
-        //variables
-        JComboBox unknownComboBox;
-        //create known combo box list label
-        JLabel unknownComboBoxList = new JLabel("Select Unknown Molecules: ");
-        //create array of list data for JList
+        
+        /**create jpanel for the unknown molecules combobox*/
+        unknownComboPanel = new JPanel(new BorderLayout());
+        
+        /**set panel color*/
+        unknownComboPanel.setBackground(new Color(203,228,38));
+        
+        /**set border for button*/
+        unknownComboPanel.setBorder(raisedBevel);
+        
+        /**create known combo box list label*/
+        unknownComboBoxLabel = new JLabel("Select Unknown Molecules: ");
+        
+        /**set font for label*/
+        unknownComboBoxLabel.setFont(new Font("Verdana",Font.BOLD,15));
+        
+        /**set foreground color for label*/
+        unknownComboBoxLabel.setForeground(new Color(12,66,116));
+        
+        /**create array of list data for JList*/
         String [] unknownComboBoxListData = {"Argon (Ar)", "Helium (He)", 
             "Neon (Ne)","Unknown 1","Unknown 2","Unknown 3"};
+        
+        /**create combobox and add data to it*/
         unknownComboBox = new JComboBox(unknownComboBoxListData);
-        //create a courses list
-        JList unknownList  = new JList(unknownComboBoxListData);
-        //set visible amount of rows in JList
+        
+        /**create a list*/
+        unknownList  = new JList(unknownComboBoxListData);
+        
+        /**set visible amount of rows in combo box to 1*/
         unknownList.setVisibleRowCount(1);
-        jp3.add(unknownComboBoxList,BorderLayout.NORTH);
-        jp3.add(unknownComboBox,BorderLayout.SOUTH);
-        c.gridwidth = 1;                                            // AEB added
-        c.gridheight = 1;                                           // AEB added
-	c.fill = GridBagConstraints.HORIZONTAL;
+        
+        /**set grid bag layout constraints*/
+        c.fill = GridBagConstraints.NONE;
         c.insets = new Insets(10,10,10,10);
 	c.weightx = 0.5;
 	c.gridx = 1;
 	c.gridy = 3;
-	pane.add(jp3, c);
+        c.ipadx = 0;
+        c.ipady = 0;
+        
+        /**add combo box label to panel*/
+        unknownComboPanel.add(unknownComboBoxLabel,BorderLayout.NORTH);
+        
+        /**add combo box to panel*/
+        unknownComboPanel.add(unknownComboBox,BorderLayout.SOUTH);
+        
+        /**add panel to pane*/
+	pane.add(unknownComboPanel, c);
         
         //*********TEMPERATURE/REACTION RATE +- SLIDER**************
-        //JSlider js = new JSlider();
-        JPanel jp4 = new JPanel(new BorderLayout());
-        JSlider slider2 = new JSlider();
-        slider2.setBorder(BorderFactory.createTitledBorder("<--Decrease "
-                + "Temperature | Increase Temperature-->"));
-        slider2.setSize(100,20);
-        slider2.setMajorTickSpacing(50);
-        slider2.setMinorTickSpacing(10);
-        slider2.setPaintTicks(true);
-        jp4.add(slider2, BorderLayout.CENTER);
+        
+        /**make new panel*/
+        sliderPanel = new JPanel(new BorderLayout());
+        
+        /**set panel color*/
+        sliderPanel.setBackground(new Color(12,66,116));
+        
+        /**make slider*/
+        slider = new JSlider();
+        
+        /**set slider color*/
+        slider.setBackground(new Color(12,66,116));
+        
+        /**make temperature label*/
+        tempLabel = new JLabel("< - Temperature + >");
+        
+        /**set font for label*/
+        tempLabel.setFont(new Font("Verdana",Font.BOLD,15));
+        
+        /**set foreground color for label*/
+        tempLabel.setForeground(Color.white);
+        
+        /**set foreground color for slider*/
+        slider.setForeground(Color.white);
+        
+        /**set slider constraints*/
+        slider.setSize(100,20);
+        slider.setMajorTickSpacing(50);
+        slider.setMinorTickSpacing(10);
+        slider.setPaintTicks(true);
+        
+        /**set grid bag layout constraints*/
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(10,10,10,10);
-	c.weightx = 0.5;
-        //c.gridwidth = 3;
+        c.insets = new Insets(0,10,0,0);
+	c.weightx = 150;
+        c.gridwidth = 1;
 	c.gridx = 2;
 	c.gridy = 3;
-	pane.add(jp4, c);
+        c.ipadx = 0;
+        c.ipady = 0;
+        
+        /**add slider to panel*/
+        sliderPanel.add(tempLabel,BorderLayout.NORTH);
+        sliderPanel.add(slider, BorderLayout.CENTER);
+        
+        /**add button to pane*/
+	pane.add(sliderPanel, c);
         
         //******************GO BUTTON********************
-	JButton button3 = new JButton("GO");
-	c.fill = GridBagConstraints.HORIZONTAL;
-	c.weightx = 0.5;
-        c.fill = GridBagConstraints.BOTH;
-        c.gridwidth = 1;                                            // AEB was 1
-	c.gridx = 3;
-	c.gridy = 3;
-	pane.add(button3, c);
         
-        //********************PLAY AND PAUSE BUTTONS******************
-        //new panel jp5 for play and pause buttons
-        JPanel jp5 = new JPanel();
-        JButton button4 = new JButton("Play");
-        JButton button5 = new JButton("Pause");
-	c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(10,10,5,5);
-	c.weightx = 0.5;
-	c.gridx = 4;
-	c.gridy = 3;
-        jp5.add(button4);
-        jp5.add(button5);
-	pane.add(jp5, c);
+        /**create go button*/
+	goButton = new JButton("GO");
         
-        //******************FORM**********************
-        JPanel jp6 = new JPanel(new BorderLayout());
-        String [] colHeading = {"Known", "Unknown", "Rate (m/s)", "Molecular Weight (MW)"};
-        String [][] data = {{"Argon", "Unknown 2", "50", "16"},
-            {"Neon", "Unknown 1", "30", "40"}};
-        JTable table = new JTable(data,colHeading);
-        JLabel enterLabel = new JLabel("Use the data in the table to "
-                + "compute the Rate and Molecular Weight...");
+        /**set button color*/
+        goButton.setBackground(new Color(203,228,38));
+        
+        /**set font for label*/
+        goButton.setFont(new Font("Verdana",Font.BOLD,20));
+        
+        /**set foreground color for label*/
+        goButton.setForeground(Color.darkGray);
+        
+        /**set border for button*/
+        goButton.setBorder(raisedBevel);
+        
+        /**set grid bag layout constraints*/
+        c.insets = new Insets(0,0,0,30);
+        c.fill = GridBagConstraints.VERTICAL;
+        c.weightx = 50;
+        c.weighty = 0;
+        c.gridwidth = 2;
+	c.gridx = 9;
+	c.gridy = 3;
+        c.ipadx = 30;
+        c.ipady = 0;
+        
+        /**add button to pane*/
+	pane.add(goButton, c);
+        
+        //******************TABLE**********************
+        
+        /**create panel for table*/
+        tablePanel = new JPanel(new BorderLayout());
+        
+        /**set panel color*/
+        tablePanel.setBackground(new Color(12,66,116));
+        
+        /**create label for table*/
+        enterLabel = new JLabel("Use the data in the table to "
+        + "compute the Rate and Molecular Weight...");
+        
+        /**set font for label*/
+        enterLabel.setFont(new Font("Verdana",Font.BOLD,20));
+        
+        /**set foreground color for label*/
+        enterLabel.setForeground(Color.white);
+        
+        /**create arrays for column headings and table data*/
+        String [] colHeading = {"Chosen Molecules", "Time", "Rate (m/s)", "Molecular Weight (MW)"};
+        String [][] data = {{comboChoice1, time1,rate1,mw1},
+            {comboChoice2,time2,rate2,mw2}};
+        
+        /**create table*/
+        table = new JTable(data,colHeading);
+        
+        /**make tool tip*/
+        table.setToolTipText("Enter your answers in the table");
+        
+        /**create scrollpane for table*/
+        jsp = new JScrollPane(table);
+        
+        /**set grid bag layout constraints*/
 	c.fill = GridBagConstraints.BOTH;
-        //c.insets = new Insets(10,10,10,10);
-	//c.weightx = 0.5;
-        c.ipady = 20;
+        c.insets = new Insets(10,10,10,10);
+        c.weightx = 0;
+        c.weighty = 0;
 	c.gridx = 0;
 	c.gridy = 5;
-        c.gridwidth = 5;
-        c.gridheight = 1;                         // AEB was 3 and commented out
-        jp6.add(enterLabel, BorderLayout.NORTH);
-        jp6.add(table, BorderLayout.SOUTH);
-	pane.add(jp6, c);
+        c.gridwidth = 15;
+        c.ipadx = 50;
+        c.ipady = 30;
+        
+        /**add label to panel*/
+        tablePanel.add(enterLabel, BorderLayout.NORTH);
+        
+        /**add scrollpane to panel*/
+        tablePanel.add(jsp);
+        
+        /**add panel to pane*/
+	pane.add(tablePanel, c);
         
         //*******************CHECK ANSWER AND RESET BUTTONS****************
-        JPanel jp8 = new JPanel(new BorderLayout());
-        JButton button6 = new JButton("Reset");
-        JButton button7 = new JButton("CheckBox");
-	c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(10,10,10,10);
-	c.weightx = 0.5;
-	c.gridx = 0;
-	c.gridy = 6;
-        jp8.add(button6, BorderLayout.WEST);
-        jp8.add(button7, BorderLayout.EAST);
-	pane.add(jp8, c);
         
+        /**create panel for reset and answer buttons*/
+        checkResetButtonPanel = new JPanel();
         
-////	button = new JButton("Long-Named Button 4");
-////	c.fill = GridBagConstraints.HORIZONTAL;
-////	c.ipady = 40;      //make this component tall
-////	c.weightx = 0.0;
-////	c.gridwidth = 3;
-////	c.gridx = 0;
-////	c.gridy = 1;
-////	pane.add(button, c);
-//
-//	button = new JButton("5");
-//	c.fill = GridBagConstraints.HORIZONTAL;
-//	c.ipady = 0;       //reset to default
-//	c.weighty = 1.0;   //request any extra vertical space
-//	c.anchor = GridBagConstraints.PAGE_END; //bottom of space
-//	c.insets = new Insets(10,0,0,0);  //top padding
-//	c.gridx = 1;       //aligned with button 2
-//	c.gridwidth = 2;   //2 columns wide
-//	c.gridy = 2;       //third row
-//	pane.add(button, c);
+        /**set panel color*/
+        checkResetButtonPanel.setBackground(new Color(12,66,116));
+        
+        /**create reset and answer buttons*/
+        resetButton = new JButton("Reset");
+        checkAnswerButton = new JButton("Check Answer");
+        
+        /**set grid bag layout constraints*/
+	c.anchor = GridBagConstraints.CENTER;
+        c.insets = new Insets(0,0,0,0);
+	c.weightx = 1;
+	c.gridx = 9;
+	c.gridy = 7;
+        c.gridwidth = 2;
+        c.ipadx = 0;
+        c.ipady = 0;
+        
+        /**add buttons to panel*/
+        checkResetButtonPanel.add(resetButton);
+        checkResetButtonPanel.add(checkAnswerButton);
+        
+        /**add panel to pane*/
+	pane.add(checkResetButtonPanel, c);
+    }
+    public class PeriodButtonEvents implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+                Icon icon = new ImageIcon("periodictable.jpg");
+                String periodic = "Periodic Table";
+                JFrame frame = new JFrame("periodictable.jpg");
+                JOptionPane.showMessageDialog(frame, icon);
+        }
     }
 
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
-     */
+    /**Create the GUI and display it*/
     private static void createAndShowGUI() {
-        //Create and set up the window.
+        /**create frame*/
         JFrame frame = new JFrame("GridBagLayoutDemo");
+        
+        /**set default close operation*/
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Set up the content pane.
+        /**set up content pane*/
         addComponentsToPane(frame.getContentPane());
 
-        //Display the window.
+        /**display the window*/
         frame.pack();
         frame.setVisible(true);
     }
 
     public static void main(String[] args) {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
+        /**Schedule a job for the event-dispatching thread:
+         * creating and showing this application's GUI.
+         */ 
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 createAndShowGUI();
-//                BouncyBubbles bt = new BouncyBubbles();
-//                bt.setup();
-//                bt.init();
             }
         });
+        
     }
     
 //    public void showWinner(){
