@@ -22,7 +22,7 @@ public class Element {
     float width = 775;
     float startBoxWidth = 200;
     Element[] others;
-    static float topSpeed = 4f;
+    static float topSpeed = 10f;
     static boolean isWinner = false;
     static boolean secondWinner = false;
     static boolean gateOpen = false;
