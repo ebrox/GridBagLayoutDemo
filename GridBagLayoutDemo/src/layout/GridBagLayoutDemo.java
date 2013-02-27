@@ -21,7 +21,7 @@ public class GridBagLayoutDemo {
     static boolean bx1 = false, bx2 = false;
     static int box1 = 0, box2 = 0;
     PeriodButtonEvents pbe;
-
+   
     public static void addComponentsToPane(Container pane) {
         if (RIGHT_TO_LEFT) {
             pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
@@ -52,6 +52,8 @@ public class GridBagLayoutDemo {
         String rate2 = "";
         String mw1 = "";
         String mw2 = "";
+        
+        
         
 //        double time1 = 0.0;
 //        double time2 = 0.0;
@@ -116,6 +118,20 @@ public class GridBagLayoutDemo {
 //        /**create a listener for the periodic button and add it to the button*/
 //        PeriodButtonEvents pbe = new PeriodButtonEvents();
 //        periodButton.addActionListener(pbe);
+        
+        /** create listener for Help button */
+        helpButton.addActionListener(new ActionListener(){
+            String instructions = "Instructions"
+                        + "\n\n1. Helium is selected already, to change the selection of elements choose two elements from the drop down boxes.  "
+                        + "\n2. Click the 'Go' button to start simulation, press any key after that to Pause/Play."
+                        + "\n3. Once the first particle of the first element and the first particle of the second element have crossed the finish line"
+                        + "\n    enter the Rate and MW of the elements in the Table."
+                        + "\n4. Check your answers.  They must be within +/- 5%";
+            
+            public void actionPerformed(ActionEvent e){
+                  JOptionPane.showMessageDialog(null, instructions);               
+            }  
+        });
         
         /**set grid bag layout constraints*/
         /**set fill*/
@@ -472,6 +488,16 @@ public class GridBagLayoutDemo {
         /**create reset and answer buttons*/
         resetButton = new JButton("Reset");
         checkAnswerButton = new JButton("Check Answer");
+        
+        /** listener for reset button */
+        resetButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                bt.setGateOpen(false);
+                knownComboBox.setSelectedIndex(0);
+                unknownComboBox.setSelectedIndex(0);
+                                        // AEB need to add reseting of the Table
+            }
+        });
         
         /**set grid bag layout constraints*/
 	c.anchor = GridBagConstraints.CENTER;
