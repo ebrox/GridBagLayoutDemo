@@ -63,6 +63,7 @@ public class GasChamber extends PApplet {
             textFont(myFont);
             textAlign(CENTER, BOTTOM);
             pushMatrix();
+            fill(0, 0, 255);
             translate(gateX, gateY);
             rotate(HALF_PI);
             text("Gate", 0, 0);
