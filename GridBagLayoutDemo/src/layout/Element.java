@@ -6,6 +6,7 @@
 package layout;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import processing.core.PVector;
 
 public class Element {
@@ -26,6 +27,8 @@ public class Element {
     static boolean isWinner = false;
     static boolean secondWinner = false;
     static boolean gateOpen = false;
+    static double time1, time2;
+    static JTable table;
 
     Element() {
         location = new PVector(90, 100);
@@ -87,6 +90,7 @@ public class Element {
             if (!isWinner && (id % 2 == 0)) {
                 JOptionPane.showMessageDialog(null, "WINNER!");
                 isWinner = true;
+                
             } else if (isWinner && !secondWinner && (id % 2 != 0)) {
                 JOptionPane.showMessageDialog(null, "Other Winner!");
                 secondWinner = true;
@@ -116,8 +120,6 @@ public class Element {
     public void setVelocity(PVector velocity) {
         this.velocity = velocity;
     }
-    
-    
 
     public static void setGateOpen(boolean gateO) {
         gateOpen = gateO;
@@ -131,21 +133,21 @@ public class Element {
         Element.topSpeed = topSpeed;
     }
 
-    public static boolean isIsWinner() {
+    public static boolean getIsWinner() {
         return isWinner;
     }
 
     public static void setIsWinner(boolean isWinner) {
         Element.isWinner = isWinner;
     }
+    
 
-    public static boolean isSecondWinner() {
+    public static boolean getSecondWinner() {
         return secondWinner;
     }
 
     public static void setSecondWinner(boolean secondWinner) {
         Element.secondWinner = secondWinner;
     }
-    
     
 }
