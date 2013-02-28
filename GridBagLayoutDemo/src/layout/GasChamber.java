@@ -73,6 +73,7 @@ public class GasChamber extends PApplet {
         textFont(myFont);
         textAlign(CENTER, BOTTOM);
         pushMatrix();
+        fill(0, 0, 255);
         translate(finishX, finishY);
         rotate(HALF_PI);
         text("Finish Line", 0, 0);
@@ -81,6 +82,7 @@ public class GasChamber extends PApplet {
         textFont(delinFont);
         textAlign(CENTER, TOP);
         pushMatrix();
+        fill(0, 0, 255);
         translate(delinX, delinY);
         text("-------------------------------------------------- 50 Meters ---------------------------------------------------", 265, 0);
         popMatrix();
