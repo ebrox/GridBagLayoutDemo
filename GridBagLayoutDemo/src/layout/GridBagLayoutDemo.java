@@ -26,6 +26,7 @@ public class GridBagLayoutDemo {
     static String mw1, mw2;
     static JTable table;
 
+    
     public static void addComponentsToPane(Container pane) {
         if (RIGHT_TO_LEFT) {
             pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
