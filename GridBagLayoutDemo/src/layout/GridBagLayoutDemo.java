@@ -495,6 +495,8 @@ public class GridBagLayoutDemo {
                 bt.setGateOpen(false);
                 knownComboBox.setSelectedIndex(0);
                 unknownComboBox.setSelectedIndex(0);
+                Element.setIsWinner(false);
+                Element.setSecondWinner(false);
                                         // AEB need to add reseting of the Table
             }
         });
