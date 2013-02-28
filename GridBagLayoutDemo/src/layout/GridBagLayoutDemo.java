@@ -1,3 +1,4 @@
+
 /*
  * 
  */
@@ -7,9 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-import javax.swing.border.SoftBevelBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -20,8 +19,13 @@ public class GridBagLayoutDemo {
     
     static boolean bx1 = false, bx2 = false;
     static int box1 = 0, box2 = 0;
-    PeriodButtonEvents pbe;
-   
+    
+    static String comboChoice1 = null, comboChoice2 = null;
+    static Double time1, time2;
+    static String rate1, rate2;
+    static String mw1, mw2;
+    static JTable table;
+
     public static void addComponentsToPane(Container pane) {
         if (RIGHT_TO_LEFT) {
             pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
@@ -33,7 +37,6 @@ public class GridBagLayoutDemo {
                 resetButton, checkAnswerButton;
         JLabel gasDiffuseLabel,enterLabel,knownComboBoxLabel,
                 unknownComboBoxLabel,tempLabel;
-        JTable table;
         JScrollPane jsp;
         final JComboBox knownComboBox,unknownComboBox;
         JList knownList,unknownList;
@@ -42,25 +45,6 @@ public class GridBagLayoutDemo {
         
         /**make raisedBevel border*/
         Border raisedBevel = BorderFactory.createRaisedSoftBevelBorder();
-        
-        /**declare and initialize*/
-        String comboChoice1 = "";
-        String comboChoice2 = "";
-        String time1 = "";
-        String time2 = "";
-        String rate1 = "";
-        String rate2 = "";
-        String mw1 = "";
-        String mw2 = "";
-        
-        
-        
-//        double time1 = 0.0;
-//        double time2 = 0.0;
-//        double rate1 = 0.0;
-//        double rate2 = 0.0;
-//        int mw1 = 0;
-//        int mw2 = 0;
         
         /**set pane layout to grid bag layout*/
 	pane.setLayout(new GridBagLayout());
@@ -115,22 +99,79 @@ public class GridBagLayoutDemo {
         periodButton = new JButton("Periodic Table");
         helpButton = new JButton("Help");
         
-//        /**create a listener for the periodic button and add it to the button*/
-//        PeriodButtonEvents pbe = new PeriodButtonEvents();
-//        periodButton.addActionListener(pbe);
-        
-        /** create listener for Help button */
-        helpButton.addActionListener(new ActionListener(){
-            String instructions = "Instructions"
-                        + "\n\n1. Helium is selected already, to change the selection of elements choose two elements from the drop down boxes.  "
-                        + "\n2. Click the 'Go' button to start simulation, press any key after that to Pause/Play."
-                        + "\n3. Once the first particle of the first element and the first particle of the second element have crossed the finish line"
-                        + "\n    enter the Rate and MW of the elements in the Table."
-                        + "\n4. Check your answers.  They must be within +/- 5%";
-            
+        /**create a listener for the periodic button*/
+        periodButton.addActionListener(new ActionListener(){
+            @Override
             public void actionPerformed(ActionEvent e){
-                  JOptionPane.showMessageDialog(null, instructions);               
-            }  
+                /**make icon object and reference the periodic table image*/
+                final Icon icon = new javax.swing.ImageIcon(getClass().getResource("periodictablesmall.png"));
+                
+                /**make string title variable*/
+                String periodic = "Periodic Table";
+                
+//                //is not resizable
+//                JFrame frame = new JFrame();
+//                JOptionPane.showMessageDialog(frame, null, periodic, JOptionPane.INFORMATION_MESSAGE,icon);
+                
+                /**make joptionpane object*/
+                JOptionPane pane = new JOptionPane(icon, JOptionPane.PLAIN_MESSAGE);
+                
+                /**make jdialog object*/
+                JDialog dialog = pane.createDialog(null, periodic);
+                
+                /**set dialog to resizable*/
+                dialog.setResizable(true);
+                
+                /**make dialog visible*/
+                dialog.setVisible(true);
+            }
+        });        
+        
+        /**create a listener for the help button*/
+        helpButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                /**make icon object and reference the periodic table image*/
+                final Icon icon = new javax.swing.ImageIcon(getClass().getResource("periodictablesmall.png"));
+                
+                /**make string title variable*/
+                String help = "Help Readme";
+                
+                /**make string variable for help content*/
+                String helpContent = "This program is designed to show you\n"
+                        + "the concept of diffusion.\n\nInstructions: \n"
+                        + "Select from the drop down boxes the two elements\n"
+                        + "you want to see displayed in the simulation box.\n\n"
+                        + "The colors and size of the particles in the box\n"
+                        + "will change to represent the elements you've\n"
+                        + "chosen.  \n\nAfter one particle of each element"
+                        + " has crossed\nthe finish line the table will display"
+                        + "the time in\nseconds for each element particle.\n\n"
+                        + "Using the periodic table, available by clicking "
+                        + "the\nPeriodic Table button, and the information in "
+                        + "the table\nat the bottom of the screen you will be "
+                        + "able to \ncalculate the rate of speed in meters per "
+                        + "second\nand the molecular weight of each particle\n"
+                        + "and type them into the table.\n\nYou can then "
+                        + "check your answers by using the check\nanswer "
+                        + "button. If the answers are correct \nyou'll see "
+                        + "'Correct' show \nif the answers are incorrect "
+                        + "you'll have the\nchance to change your answers and "
+                        + "recheck 2 \nmore times.  Good Luck!";
+                        
+                
+                /**make joptionpane object*/
+                JOptionPane pane = new JOptionPane(helpContent, JOptionPane.PLAIN_MESSAGE);
+                
+                /**make jdialog object*/
+                JDialog dialog = pane.createDialog(null, help);
+                
+                /**set dialog to resizable*/
+                dialog.setResizable(true);
+                
+                /**make dialog visible*/
+                dialog.setVisible(true);
+            }
         });
         
         /**set grid bag layout constraints*/
@@ -230,17 +271,7 @@ public class GridBagLayoutDemo {
         
         /**set visible amount of rows in JList to 1*/
         knownList.setVisibleRowCount(1);
-        
-        /** listener to start mix using particleFill method from GasChamber */
-        knownComboBox.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                bx1 = true;
-                box1 = knownComboBox.getSelectedIndex();
-                  if (bx1 && bx2){
-                      bt.particleFill(box1, box2);
-                  }  
-            }  
-        });
+          
        
         
         /**set grid bag layout constraints*/
@@ -252,6 +283,28 @@ public class GridBagLayoutDemo {
 	c.gridy = 3;
         c.ipadx = 0;
         c.ipady = 0;
+        
+        /** listener to start mix using particleFill method from GasChamber */
+        knownComboBox.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                bx1 = true;
+                
+                /**set box1 to get the selected index*/
+                box1 = knownComboBox.getSelectedIndex();
+                      bt.particleFill(box1, box2);
+                  
+                      /**declares choice1 var. and sets value to selected item*/
+                      String choice1 = knownComboBox.getSelectedItem().toString();
+                      
+                      /**sets value at 0,0 in table to choice1*/
+                      table.setValueAt(choice1, 0, 0);
+                      /** pulls value of time1 from GasChamber */
+                      time1 = GasChamber.time1;   
+                      /** sets value at 0,1 in table to time1 */
+                      table.setValueAt(time1.toString(), 0, 1);
+            }  
+        });
         
         /**add combo box label to panel*/
         knownComboPanel.add(knownComboBoxLabel,BorderLayout.NORTH);
@@ -297,12 +350,21 @@ public class GridBagLayoutDemo {
         
         /** listener to start mix using particleFill method from GasChamber */
         unknownComboBox.addActionListener(new ActionListener(){
+            @Override
             public void actionPerformed(ActionEvent e){
                 bx2 = true;
+                /**set box2 to get the selected index*/
                 box2 = unknownComboBox.getSelectedIndex();
-                  if (bx1 && bx2){
-                      bt.particleFill(box1, box2);
-                  }  
+                      bt.particleFill(box1, box2); 
+                  
+                      /**declares choice2 var. and sets value to selected item*/
+                      String choice2 = unknownComboBox.getSelectedItem().toString();
+                      /**sets value at 1,0 in table to choice2*/
+                      table.setValueAt(choice2, 1, 0);
+                      /** pulls value of time1 from GasChamber */  
+                      time2 = GasChamber.time2;
+                      /** sets value at 1,1 in table to time2 */
+                      table.setValueAt(time2.toString(), 1, 1);
             }  
         });
         
@@ -353,6 +415,7 @@ public class GridBagLayoutDemo {
         
         /**set slider constraints*/
         slider.setSize(100,20);
+        slider.setValue(110);
         slider.setMinimum(10);
         slider.setMaximum(200);
         slider.setMajorTickSpacing(50);
@@ -364,6 +427,7 @@ public class GridBagLayoutDemo {
             @Override
             public void stateChanged(ChangeEvent e){
                 float value = slider.getValue();
+                
                 Element.setTopSpeed((value/10));
             }
         });
@@ -405,6 +469,7 @@ public class GridBagLayoutDemo {
         
         /** listener to open the gate and start the race */
         goButton.addActionListener(new ActionListener(){
+            @Override
             public void actionPerformed(ActionEvent e){
                   bt.setGateOpen(true);  
                 
@@ -445,14 +510,17 @@ public class GridBagLayoutDemo {
         
         /**create arrays for column headings and table data*/
         String [] colHeading = {"Chosen Molecules", "Time", "Rate (m/s)", "Molecular Weight (MW)"};
-        String [][] data = {{comboChoice1, time1,rate1,mw1},
-            {comboChoice2,time2,rate2,mw2}};
+        String [][] data = {{"","","",""},
+            {"","","",""}};
         
         /**create table*/
         table = new JTable(data,colHeading);
         
         /**make tool tip*/
         table.setToolTipText("Enter your answers in the table");
+        
+        /**make table not enabled to be edited*/
+        table.setEnabled(true);
         
         /**create scrollpane for table*/
         jsp = new JScrollPane(table);
@@ -477,6 +545,17 @@ public class GridBagLayoutDemo {
         /**add panel to pane*/
 	pane.add(tablePanel, c);
         
+            String choice1 = knownComboBox.getSelectedItem().toString();
+            String choice2 = unknownComboBox.getSelectedItem().toString();
+            
+            time1 = GasChamber.time1;
+            time2 = GasChamber.time2;
+             
+            table.setValueAt(choice1, 0, 0);
+            table.setValueAt(choice2, 1, 0);
+            table.setValueAt(time1.toString(), 0, 1);
+            table.setValueAt(time2.toString(), 1, 1);
+            
         //*******************CHECK ANSWER AND RESET BUTTONS****************
         
         /**create panel for reset and answer buttons*/
@@ -491,15 +570,48 @@ public class GridBagLayoutDemo {
         
         /** listener for reset button */
         resetButton.addActionListener(new ActionListener(){
+            @Override
             public void actionPerformed(ActionEvent e){
                 bt.setGateOpen(false);
                 knownComboBox.setSelectedIndex(0);
                 unknownComboBox.setSelectedIndex(0);
+                clearTable(table);
                 Element.setIsWinner(false);
                 Element.setSecondWinner(false);
-                                        // AEB need to add reseting of the Table
+                slider.setValue(110);
+                Element.setTopSpeed(10f);
+                String choice1 = knownComboBox.getSelectedItem().toString();
+                String choice2 = unknownComboBox.getSelectedItem().toString();
+                time1 = GasChamber.time1;
+                time2 = GasChamber.time2;
+                table.setValueAt(choice1, 0, 0);
+                table.setValueAt(choice2, 1, 0);
+                table.setValueAt(time1.toString(), 0, 1);
+                table.setValueAt(time2.toString(), 1, 1);
+                
             }
         });
+        
+        /** listener for check answer button */
+        checkAnswerButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                
+                /**get the values from user input cells and compare them to 
+                 * correct values*/
+                rate1 = table.getValueAt(0,2).toString();
+                rate2 = table.getValueAt(1,2).toString();
+                mw1 = table.getValueAt(0,3).toString();
+                mw2 = table.getValueAt(1,3).toString();
+                
+                JOptionPane.showMessageDialog(table, rate1);
+                JOptionPane.showMessageDialog(table, rate2);
+                JOptionPane.showMessageDialog(table,mw1);
+                JOptionPane.showMessageDialog(table, mw2);
+                
+            }
+        });
+        
         
         /**set grid bag layout constraints*/
 	c.anchor = GridBagConstraints.CENTER;
@@ -518,16 +630,14 @@ public class GridBagLayoutDemo {
         /**add panel to pane*/
 	pane.add(checkResetButtonPanel, c);
     }
-    public class PeriodButtonEvents implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e){
-                Icon icon = new ImageIcon("periodictable.jpg");
-                String periodic = "Periodic Table";
-                JFrame frame = new JFrame("periodictable.jpg");
-                JOptionPane.showMessageDialog(frame, icon);
+    public static void clearTable(final JTable table) {
+        for (int i = 0; i < table.getRowCount(); i++) {
+            for(int j = 0; j < table.getColumnCount(); j++) {
+                table.setValueAt("", i, j);
+            }
         }
     }
-
+    
     /**Create the GUI and display it*/
     private static void createAndShowGUI() {
         /**create frame*/
@@ -556,4 +666,4 @@ public class GridBagLayoutDemo {
         });
         
     }
-}
+}    
