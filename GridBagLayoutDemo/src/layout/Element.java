@@ -130,4 +130,22 @@ public class Element {
     public static void setTopSpeed(float topSpeed) {
         Element.topSpeed = topSpeed;
     }
+
+    public static boolean isIsWinner() {
+        return isWinner;
+    }
+
+    public static void setIsWinner(boolean isWinner) {
+        Element.isWinner = isWinner;
+    }
+
+    public static boolean isSecondWinner() {
+        return secondWinner;
+    }
+
+    public static void setSecondWinner(boolean secondWinner) {
+        Element.secondWinner = secondWinner;
+    }
+    
+    
 }
